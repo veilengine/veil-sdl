@@ -2,9 +2,12 @@
 #define __VeilSystemSDLRenderer__
 
 #include <unordered_map>
+#include <iostream>
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+
 #include <Veil/Systems/System.h>
 #include <Veil/Entity.h>
 #include <Veil/Components/Component.h>

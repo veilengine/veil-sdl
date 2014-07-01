@@ -2,6 +2,7 @@
 #define __VeilSystemSDLInput__
 
 #include <SDL2/SDL.h>
+
 #include <Veil/Systems/System.h>
 #include <Veil/Entity.h>
 

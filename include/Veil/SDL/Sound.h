@@ -2,7 +2,10 @@
 #define __VeilSystemSDLSound__
 
 #include <functional>
+#include <iostream>
+
 #include <SDL2/SDL_mixer.h>
+
 #include <Veil/Systems/System.h>
 
 namespace Veil {
