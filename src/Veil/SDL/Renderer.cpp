@@ -123,18 +123,18 @@ void SDLRenderer::renderTexture(Entity* e) {
 }
 
 SDL_Texture* SDLRenderer::getTexture(Entity* e) {
-  if ( ! e->has<SDLTexture>()) {
-    Texture* texture = e->as<Texture>();
-    if (texture == NULL) {
-      return 0;
-    }
+  Texture* texture = e->as<Texture>();
+  if (texture == NULL) {
+    return 0;
+  }
 
+  if ( ! texture->has<SDLTexture>()) {
     SDL_Surface* surface = IMG_Load(texture->path);
-    e->add(new SDLTexture(surface, renderer));
+    texture->add(new SDLTexture(surface, renderer));
     SDL_FreeSurface(surface);
   }
 
-  return e->as<SDLTexture>()->texture;
+  return texture->as<SDLTexture>()->texture;
 }
 
 SDL_Texture* SDLRenderer::getText(Entity* e) {
