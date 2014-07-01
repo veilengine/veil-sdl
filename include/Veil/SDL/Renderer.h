@@ -1,5 +1,5 @@
-#ifndef __VeilSystemSDLRenderer__
-#define __VeilSystemSDLRenderer__
+#ifndef __VeilSDLRenderer__
+#define __VeilSDLRenderer__
 
 #include <unordered_map>
 #include <iostream>
@@ -22,44 +22,52 @@
 #include <Veil/Components/Offset.h>
 #include <Veil/Components/Size.h>
 
+#include <Veil/SDL/Components/Texture.h>
+#include <Veil/SDL/Components/Typeface.h>
+
 namespace Veil {
+namespace SDL {
 
-  struct SDLTexture : public Component {
-    SDL_Renderer* renderer;
-    SDL_Texture* texture;
-    SDLTexture(SDL_Surface*, SDL_Renderer*);
-  };
+class Renderer {
+  bool active = false;
 
-  struct SDLTypeface : public Component {
-    TTF_Font* typeface;
-    SDLTypeface(TTF_Font* _typeface) : typeface(_typeface) {};
-  };
+  public:
+    void init() {
+      if ( ! active) {
+        active = true;
 
-  class SDLRenderer : public System {
-    SDL_Renderer* renderer;
-    SDL_Window* window;
+        // Initialize SDL systems
+        if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+          std::cout << "Failed to initialize sdl" << std::endl;
+          exit(1);
+          return;
+        }
 
-    static Position* defaultPosition;
-    static Rotation* defaultRotation;
-    static Offset* defaultOffset;
+        // Initialize TTF systems
+        if (TTF_Init() < 0) {
+          std::cout << TTF_GetError() << std::endl;
+          return;
+        }
+      }
+    };
 
-    void renderTexture(Entity* e);
-    void renderText(Entity* e);
+    void quit() {
+      if (active) {
+        TTF_Quit();
+        SDL_Quit();
+      }
+    };
 
-    SDL_Texture* getTexture(Entity* e);
-    SDL_Texture* getText(Entity* e);
+    static Renderer* instance() {
+      static Renderer* singleton;
+      if ( ! singleton) {
+        singleton = new Renderer;
+      }
+      return singleton;
+    }
+};
 
-    Position* getPosition(Entity* e);
-    Rotation* getRotation(Entity* e);
-    Offset* getOffset(Entity* e);
-    Size* getSize(Entity* e, SDL_Texture* texture);
+} // namespace SDL
+} // namespace Veil
 
-    public:
-      SDLRenderer(Entity* e);
-      ~SDLRenderer();
-      void render();
-  };
-
-}
-
-#endif /* defined(__VeilSystemSDLRenderer__) */
+#endif /* defined(__VeilSDLRenderer__) */

@@ -1,8 +1,9 @@
 #include <Veil/SDL/Input.h>
 
 namespace Veil {
+namespace SDL {
 
-void SDLInput::update (double dt) {
+void Input::update (double dt) {
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
       case SDL_QUIT:
@@ -12,4 +13,5 @@ void SDLInput::update (double dt) {
   }
 }
 
+} // namespace SDL
 } // namespace Veil
